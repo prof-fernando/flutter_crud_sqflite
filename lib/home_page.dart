@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:crud_sqlite/sql_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -79,9 +82,13 @@ class _HomePageState extends State<HomePage> {
                                             showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
-                                                title: Text('AGUARDE...'),
+                                                title: Lottie.asset(
+                                                    'assets/lottie/sync4.json'),
                                               ),
                                             );
+                                            await Future.delayed(
+                                                Duration(seconds: 2));
+
                                             int id = usuarios[indice]
                                                 ["idusuario"] as int;
                                             int linhas =
