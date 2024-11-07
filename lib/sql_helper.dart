@@ -19,14 +19,33 @@ class SqlHelper {
 ''';
   }
 
-  static Future<int> gravar(String nome, String email) async {
+  static Future<int> gravar(String nome, String email, [int id = 0]) async {
     Database banco = await getDataseConnection();
     final values = {'nome': nome, 'email': email};
-    return banco.insert('usuario', values);
+    if (id > 0) {
+      return banco.update(
+        'usuario',
+        values,
+        where: 'idusuario = ?',
+        whereArgs: [id],
+      );
+    } else {
+      return banco.insert('usuario', values);
+    }
   }
 
-  static Future<List<Map<String, Object?>>> listar() async {
+  static Future<List<Map<String, Object?>>> listar(
+      [String campoOrdem = 'nome']) async {
     Database banco = await getDataseConnection();
-    return banco.query('usuario', orderBy: 'nome');
+    return banco.query('usuario', orderBy: campoOrdem);
+  }
+
+  static Future<int> deletar(int id) async {
+    Database banco = await getDataseConnection();
+    return banco.delete(
+      'usuario',
+      where: 'idusuario = ?',
+      whereArgs: [id],
+    );
   }
 }
